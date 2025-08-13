@@ -78,6 +78,7 @@ The site configuration can be customized through:
 ## 📝 Adding Content
 
 ### New Project
+
 Create a new markdown file in `content/projects/`:
 
 ```markdown
@@ -92,6 +93,7 @@ Project description and content here...
 ```
 
 ### New Journal Post
+
 Create a new markdown file in `content/journal/`:
 
 ```markdown
