@@ -1,0 +1,82 @@
+---
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  project: CollectionEntry<"projects">;
+}
+
+const { project } = Astro.props;
+---
+
+<article class="project-card">
+  <a href={`/projects/${project.id}/`}>
+    <div class="image-wrap">
+      <Image src={project.data.cover} alt={project.data.coverAlt} loading="lazy" />
+      {project.data.draft && <span class="draft">Draft preview</span>}
+    </div>
+    <div class="card-copy">
+      <span class="meta">{project.data.itemType} · {project.data.status.replace("-", " ")}</span>
+      <h3>{project.data.title}</h3>
+      <p>{project.data.summary}</p>
+    </div>
+  </a>
+</article>
+
+<style>
+  .project-card a {
+    display: block;
+    text-decoration: none;
+  }
+
+  .image-wrap {
+    aspect-ratio: 4 / 5;
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .image-wrap :global(img) {
+    height: 100%;
+    object-fit: cover;
+    transition: transform 350ms ease;
+    width: 100%;
+  }
+
+  a:hover .image-wrap :global(img) {
+    transform: scale(1.025);
+  }
+
+  .draft {
+    background: var(--ink);
+    color: white;
+    font-size: 0.72rem;
+    left: 0.75rem;
+    padding: 0.35rem 0.6rem;
+    position: absolute;
+    top: 0.75rem;
+  }
+
+  .card-copy {
+    padding: 1.25rem 0.4rem 0;
+  }
+
+  .meta {
+    color: var(--rose-dark);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  h3 {
+    margin: 0.45rem 0 0.6rem;
+  }
+
+  p {
+    color: var(--muted);
+    margin: 0;
+  }
+</style>

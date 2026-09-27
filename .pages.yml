@@ -1,0 +1,245 @@
+media:
+  name: sewing-images
+  label: Sewing images
+  input: src/assets/images
+  output: ../../assets/images
+  categories: [image]
+  extensions: [jpg, jpeg, png, webp, avif]
+  rename: safe
+
+settings:
+  content:
+    merge: true
+  commit:
+    identity: user
+
+content:
+  - name: projects
+    label: Sewing projects
+    type: collection
+    path: src/content/projects
+    format: yaml-frontmatter
+    filename: "{primary}.md"
+    view:
+      primary: title
+      fields: [title, publishDate, status, draft]
+      sort: [publishDate, title]
+      search: [title, summary, itemType, techniques]
+      default:
+        sort: publishDate
+        order: desc
+    fields:
+      - name: title
+        label: Project title
+        type: string
+        required: true
+      - name: publishDate
+        label: Publish date
+        type: date
+        required: true
+      - name: summary
+        label: Short summary
+        type: text
+        required: true
+        description: A one- or two-sentence introduction used on project cards and in search previews.
+      - name: cover
+        label: Cover photo
+        type: image
+        required: true
+        options:
+          media: sewing-images
+      - name: coverAlt
+        label: Cover photo description
+        type: string
+        required: true
+        description: Describe what is visible in the photo for visitors using screen readers.
+      - name: status
+        label: Project status
+        type: select
+        required: true
+        default: finished
+        options:
+          values:
+            - value: planned
+              label: Planned
+            - value: in-progress
+              label: In progress
+            - value: finished
+              label: Finished
+      - name: itemType
+        label: What did you make?
+        type: string
+        required: true
+        description: For example, dress, quilt, bag, trousers, or costume.
+      - name: pattern
+        label: Pattern
+        type: string
+      - name: designer
+        label: Pattern designer
+        type: string
+      - name: fabric
+        label: Fabric and materials
+        type: text
+      - name: techniques
+        label: Techniques
+        type: string
+        list: true
+      - name: featured
+        label: Feature on the home page
+        type: boolean
+        default: false
+      - name: draft
+        label: Keep as draft
+        type: boolean
+        default: true
+        description: Turn this off when the project is ready to appear publicly.
+      - name: gallery
+        label: More photos
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{alt}"
+        fields:
+          - name: image
+            label: Photo
+            type: image
+            required: true
+            options:
+              media: sewing-images
+          - name: alt
+            label: Photo description
+            type: string
+            required: true
+      - name: body
+        label: Project story
+        type: rich-text
+        required: true
+
+  - name: journal
+    label: Journal
+    type: collection
+    path: src/content/journal
+    format: yaml-frontmatter
+    filename: "{primary}.md"
+    view:
+      primary: title
+      fields: [title, publishDate, draft]
+      sort: [publishDate, title]
+      search: [title, summary, tags]
+      default:
+        sort: publishDate
+        order: desc
+    fields:
+      - name: title
+        label: Post title
+        type: string
+        required: true
+      - name: publishDate
+        label: Publish date
+        type: date
+        required: true
+      - name: summary
+        label: Short summary
+        type: text
+        required: true
+      - name: cover
+        label: Cover photo
+        type: image
+        required: true
+        options:
+          media: sewing-images
+      - name: coverAlt
+        label: Cover photo description
+        type: string
+        required: true
+      - name: tags
+        label: Topics
+        type: string
+        list: true
+      - name: featured
+        label: Featured
+        type: boolean
+        default: false
+      - name: draft
+        label: Keep as draft
+        type: boolean
+        default: true
+        description: Turn this off when the post is ready to appear publicly.
+      - name: body
+        label: Post
+        type: rich-text
+        required: true
+
+  - name: about
+    label: About page
+    type: file
+    path: src/content/pages/about.md
+    format: yaml-frontmatter
+    fields:
+      - name: title
+        label: Heading
+        type: string
+        required: true
+      - name: eyebrow
+        label: Small heading
+        type: string
+      - name: portrait
+        label: Portrait
+        type: image
+        options:
+          media: sewing-images
+      - name: portraitAlt
+        label: Portrait description
+        type: string
+      - name: body
+        label: About Donna
+        type: rich-text
+        required: true
+
+  - name: site
+    label: Site settings
+    type: file
+    path: src/data/site.json
+    format: json
+    fields:
+      - name: siteName
+        label: Site name
+        type: string
+        required: true
+      - name: siteDescription
+        label: Search description
+        type: text
+        required: true
+      - name: heroEyebrow
+        label: Home page small heading
+        type: string
+        required: true
+      - name: heroTitle
+        label: Home page heading
+        type: string
+        required: true
+      - name: heroText
+        label: Home page introduction
+        type: text
+        required: true
+      - name: email
+        label: Contact email
+        type: string
+        description: Leave blank to hide the email link.
+      - name: socialLinks
+        label: Social links
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{label}"
+        fields:
+          - name: label
+            label: Name
+            type: string
+            required: true
+          - name: url
+            label: Web address
+            type: string
+            required: true

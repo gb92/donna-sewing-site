@@ -1,47 +1,120 @@
-<p align="center">
-  <img src="https://file-xidfrcjkaq.now.sh/" height="240">
-  <h3 align="center">Gridsome x Forestry</h3>
-  <p align="center">A starter-kit by Nichlas W. Andersen<p>
-</p>
+# That's Sew Donna
 
-<p align="center">
-  <a href="https://app.netlify.com/sites/gridsome-forestry/deploys"><img src="https://api.netlify.com/api/v1/badges/21965bf1-8f46-4201-afe9-98896cba865e/deploy-status" alt="Netlify Status"></a>
-</p>
+A statically generated sewing portfolio and journal. The public site is built
+with [Astro](https://astro.build), content and images live in this repository,
+and [Pages CMS](https://pagescms.org) provides the browser-based editor.
 
+There is no application server or database. Saving content through Pages CMS
+commits files to GitHub; Vercel sees the commit and publishes a new static build.
 
-## Development
+## Local development
+
+Requirements:
+
+- Node.js 22 (see `.nvmrc`)
+- npm
 
 ```bash
-# install Gridsome globally
-npm install --global @gridsome/cli
-
-# cd into the project directory
-cd gridsome-forestry-starter
-
-# install dependencies
 npm install
-
-# Start local dev server
-npm run develop
+npm run dev
 ```
 
+Useful commands:
 
-## Forestry (Content Management)
+| Command | Purpose |
+| --- | --- |
+| `npm run dev` | Start the local site, including draft content |
+| `npm run check` | Validate Astro, TypeScript, and content schemas |
+| `npm run build` | Validate and create the production site in `dist/` |
+| `npm run preview` | Preview the production build locally |
 
-This project has been pre-configured to work with Forestry, just import your repository ✨  
-Any changes you make will be commited back to the repo, and deployed if you're using Netlify.
+Set `SITE_URL` to the production origin when building locally if canonical URLs
+need to match the deployed site:
 
-<p>
-  <a href="https://app.forestry.io/quick-start?repo=itsnwa/gridsome-forestry-starter&amp;provider=github&amp;engine=vuepress" rel="nofollow"><img src="https://camo.githubusercontent.com/2455e97e4e989374a355fb0bea7ad364f2561c92/68747470733a2f2f6173736574732e666f7265737472792e696f2f696d706f72742d746f2d666f7265737472794b2e737667" alt="Import this project into Forestry" data-canonical-src="https://assets.forestry.io/import-to-forestryK.svg" style="max-width:100%;"></a>
-</p>
+```bash
+SITE_URL=https://example.com npm run build
+```
 
+## Content
 
-## Deploy with Netlify
+Content is organized into:
 
-Import your site in Netlify
+- `src/content/projects/` — individual sewing projects
+- `src/content/journal/` — journal entries
+- `src/content/pages/about.md` — the About page
+- `src/data/site.json` — site name, introduction, email, and social links
+- `src/assets/images/` — author-uploaded images
 
-1. Create a new site in Netlify and import your repository.
-2. Set the build command to: `gridsome build`
-3. Set the publish directory to: `dist`
+Projects and journal posts use Markdown with structured frontmatter. The schema
+in `src/content.config.ts` validates every field during the build. Draft entries
+are visible locally but excluded from production pages, detail routes, and RSS.
 
-That's it, now your site gets deployed automatically on `git push` or when saving documents from Forestry.
+The included `sample-project.md` and `sample-post.md` are clearly marked drafts.
+They demonstrate every major field and can be deleted after the first real
+content is created.
+
+### Image guidance
+
+For good visual quality without making Git history unnecessarily large:
+
+- Prefer JPEG, WebP, or AVIF photographs.
+- Resize photos to about 2400 pixels on the longest edge before uploading.
+- Aim for less than 2 MB per image.
+- Use short descriptive filenames such as `linen-apron-front.webp`.
+- Describe the visible content of every image in its photo-description field.
+
+Images imported from `src/assets/images/` are processed by Astro during the
+static build. Original files remain in GitHub, so they are portable to another
+host or CMS later.
+
+## Editing with Pages CMS
+
+The editor is configured by `.pages.yml`.
+
+Initial owner setup:
+
+1. Sign in at [app.pagescms.org](https://app.pagescms.org) with the GitHub
+   account that owns or can edit this repository.
+2. Authorize the repository and select its production branch.
+3. Confirm that **Sewing projects**, **Journal**, **About page**, and
+   **Site settings** appear in the sidebar.
+4. Give Donna repository access appropriate for editing through Pages CMS.
+
+Routine publishing:
+
+1. Open Pages CMS and choose **Sewing projects** or **Journal**.
+2. Create an entry and complete the labeled fields.
+3. Upload the cover photo and add a useful photo description.
+4. Leave **Keep as draft** enabled while writing.
+5. Preview locally or in a Vercel preview deployment when needed.
+6. Turn off **Keep as draft** and save to publish.
+7. Wait for the Vercel deployment attached to the resulting GitHub commit.
+
+Pages CMS is only the editing layer. If it is replaced later, no content
+migration is required: the Markdown, JSON, and images are already in GitHub.
+CloudCannon is a reasonable paid alternative if a richer editorial workflow is
+eventually needed.
+
+## Deploying to Vercel
+
+1. Import this GitHub repository into Vercel.
+2. Vercel should detect Astro automatically.
+3. Use `npm run build` as the build command and `dist` as the output directory
+   if manual values are requested.
+4. Vercel supplies the production domain automatically. If the custom domain
+   should be used for canonical URLs before it becomes the project’s primary
+   domain, set `SITE_URL` to that HTTPS origin without a trailing slash.
+5. Deploy, then make the selected production branch match the branch used by
+   Pages CMS.
+
+Every push gets a Vercel preview deployment; pushes to the production branch
+update the public site. No Vercel functions, storage, or database are required.
+
+## Domain and recovery
+
+Connect a custom domain from the Vercel project’s **Domains** settings, then set
+`SITE_URL` to that same origin. DNS remains with the chosen domain registrar.
+
+To recover or move the site, clone the repository, install Node 22, run
+`npm install && npm run build`, and deploy the generated `dist/` directory to
+any static host. The Git history contains the content and original images.

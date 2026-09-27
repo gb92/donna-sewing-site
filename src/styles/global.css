@@ -1,0 +1,177 @@
+:root {
+  --ink: #302925;
+  --muted: #756a63;
+  --paper: #f9f5ee;
+  --surface: #fffdf9;
+  --rose: #a44f52;
+  --rose-dark: #743638;
+  --sage: #697d68;
+  --line: #ddd3c7;
+  --shadow: 0 18px 50px rgb(72 54 44 / 10%);
+  --content: 72rem;
+  --reading: 45rem;
+  --radius: 1.25rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Avenir Next", Avenir, "Segoe UI", sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.65;
+  text-rendering: optimizeLegibility;
+}
+
+body::before {
+  background-image: radial-gradient(rgb(48 41 37 / 8%) 0.6px, transparent 0.6px);
+  background-size: 7px 7px;
+  content: "";
+  inset: 0;
+  opacity: 0.22;
+  pointer-events: none;
+  position: fixed;
+  z-index: -1;
+}
+
+a {
+  color: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-kerning: normal;
+  font-weight: 500;
+  line-height: 1.08;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: clamp(3rem, 9vw, 6.75rem);
+  font-kerning: none;
+}
+
+h2 {
+  font-size: clamp(2.2rem, 5vw, 4rem);
+}
+
+h3 {
+  font-size: clamp(1.5rem, 3vw, 2.15rem);
+}
+
+p {
+  text-wrap: pretty;
+}
+
+:focus-visible {
+  outline: 3px solid var(--rose);
+  outline-offset: 4px;
+}
+
+.container {
+  margin-inline: auto;
+  max-width: var(--content);
+  padding-inline: clamp(1.25rem, 4vw, 3rem);
+}
+
+.section {
+  padding-block: clamp(4.5rem, 10vw, 8rem);
+}
+
+.eyebrow {
+  color: var(--rose-dark);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.section-heading {
+  align-items: end;
+  display: flex;
+  gap: 2rem;
+  justify-content: space-between;
+  margin-bottom: 2.5rem;
+}
+
+.section-heading h2 {
+  margin: 0.25rem 0 0;
+}
+
+.text-link {
+  color: var(--rose-dark);
+  font-weight: 700;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.3em;
+}
+
+.card-grid {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+}
+
+.empty-state {
+  background: var(--surface);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  color: var(--muted);
+  padding: 2rem;
+}
+
+.prose {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.08rem, 2vw, 1.25rem);
+  margin-inline: auto;
+  max-width: var(--reading);
+}
+
+.prose h2,
+.prose h3 {
+  margin-top: 2.5em;
+}
+
+.prose a {
+  color: var(--rose-dark);
+}
+
+.prose img {
+  border-radius: 0.75rem;
+  margin-block: 2rem;
+}
+
+@media (max-width: 40rem) {
+  .section-heading {
+    align-items: start;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

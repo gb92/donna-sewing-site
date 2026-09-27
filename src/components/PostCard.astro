@@ -1,0 +1,66 @@
+---
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+import { formatDate } from "../lib/content";
+
+interface Props {
+  post: CollectionEntry<"journal">;
+}
+
+const { post } = Astro.props;
+---
+
+<article class="post-card">
+  <a href={`/journal/${post.id}/`}>
+    <Image src={post.data.cover} alt={post.data.coverAlt} loading="lazy" />
+    <div>
+      <span>{formatDate(post.data.publishDate)}</span>
+      <h3>{post.data.title}</h3>
+      <p>{post.data.summary}</p>
+    </div>
+  </a>
+</article>
+
+<style>
+  .post-card {
+    border-top: 1px solid var(--line);
+    padding-block: 1.5rem;
+  }
+
+  a {
+    align-items: center;
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: 9rem 1fr;
+    text-decoration: none;
+  }
+
+  :global(img) {
+    aspect-ratio: 1;
+    border-radius: 0.75rem;
+    object-fit: cover;
+  }
+
+  span {
+    color: var(--rose-dark);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  h3 {
+    margin: 0.25rem 0 0.5rem;
+  }
+
+  p {
+    color: var(--muted);
+    margin: 0;
+  }
+
+  @media (max-width: 34rem) {
+    a {
+      align-items: start;
+      grid-template-columns: 6rem 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,41 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+import { isPublished, newestFirst } from "../../lib/content";
+
+const projects = newestFirst((await getCollection("projects")).filter(isPublished));
+---
+
+<BaseLayout title="Projects" description="Handmade sewing projects, pattern notes, materials, and lessons from the making process.">
+  <header class="page-header container">
+    <span class="eyebrow">The handmade archive</span>
+    <h1>Sewing projects</h1>
+    <p>Finished pieces, works in progress, favorite patterns, and the details that made each project unique.</p>
+  </header>
+  <section class="container">
+    {projects.length ? (
+      <div class="card-grid">
+        {projects.map((project) => <ProjectCard project={project} />)}
+      </div>
+    ) : (
+      <div class="empty-state">No projects have been published yet.</div>
+    )}
+  </section>
+</BaseLayout>
+
+<style>
+  .page-header {
+    padding-block: clamp(4rem, 10vw, 8rem);
+  }
+
+  h1 {
+    margin: 0.4rem 0 1rem;
+  }
+
+  p {
+    color: var(--muted);
+    font-size: 1.2rem;
+    max-width: 42rem;
+  }
+</style>

@@ -1,0 +1,41 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PostCard from "../../components/PostCard.astro";
+import { isPublished, newestFirst } from "../../lib/content";
+
+const posts = newestFirst((await getCollection("journal")).filter(isPublished));
+---
+
+<BaseLayout title="Journal" description="Sewing notes, pattern reviews, techniques, and stories from the making process.">
+  <header class="page-header container">
+    <span class="eyebrow">Notes along the way</span>
+    <h1>The sewing journal</h1>
+    <p>Pattern thoughts, useful techniques, mistakes worth remembering, and stories behind the projects.</p>
+  </header>
+  <section class="posts container">
+    {posts.length ? posts.map((post) => <PostCard post={post} />) : (
+      <div class="empty-state">No journal entries have been published yet.</div>
+    )}
+  </section>
+</BaseLayout>
+
+<style>
+  .page-header {
+    padding-block: clamp(4rem, 10vw, 8rem);
+  }
+
+  h1 {
+    margin: 0.4rem 0 1rem;
+  }
+
+  .page-header p {
+    color: var(--muted);
+    font-size: 1.2rem;
+    max-width: 42rem;
+  }
+
+  .posts {
+    max-width: 58rem;
+  }
+</style>

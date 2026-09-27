@@ -1,0 +1,132 @@
+---
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import { Image } from "astro:assets";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { formatDate, isPublished } from "../../lib/content";
+
+export async function getStaticPaths() {
+  const projects = (await getCollection("projects")).filter(isPublished);
+  return projects.map((project) => ({ params: { id: project.id }, props: { project } }));
+}
+
+interface Props {
+  project: CollectionEntry<"projects">;
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+const details = [
+  ["Status", project.data.status.replace("-", " ")],
+  ["Type", project.data.itemType],
+  ["Pattern", project.data.pattern],
+  ["Designer", project.data.designer],
+  ["Fabric", project.data.fabric]
+].filter((detail) => detail[1]);
+---
+
+<BaseLayout title={project.data.title} description={project.data.summary}>
+  <article>
+    <header class="project-header container">
+      <span class="eyebrow">{project.data.itemType} · {formatDate(project.data.publishDate)}</span>
+      <h1>{project.data.title}</h1>
+      <p>{project.data.summary}</p>
+    </header>
+    <div class="cover container">
+      <Image src={project.data.cover} alt={project.data.coverAlt} />
+    </div>
+    <div class="project-body container">
+      <aside aria-label="Project details">
+        {details.map(([label, value]) => (
+          <div><dt>{label}</dt><dd>{value}</dd></div>
+        ))}
+        {project.data.techniques.length > 0 && (
+          <div><dt>Techniques</dt><dd>{project.data.techniques.join(", ")}</dd></div>
+        )}
+      </aside>
+      <div class="prose"><Content /></div>
+    </div>
+    {project.data.gallery.length > 0 && (
+      <section class="gallery container" aria-label="Project gallery">
+        {project.data.gallery.map((item) => <Image src={item.image} alt={item.alt} loading="lazy" />)}
+      </section>
+    )}
+  </article>
+</BaseLayout>
+
+<style>
+  .project-header {
+    max-width: 60rem;
+    padding-block: clamp(4rem, 10vw, 8rem);
+    text-align: center;
+  }
+
+  h1 {
+    margin: 0.4rem 0 1rem;
+  }
+
+  .project-header p {
+    color: var(--muted);
+    font-size: 1.25rem;
+    margin-inline: auto;
+    max-width: 42rem;
+  }
+
+  .cover :global(img) {
+    border-radius: var(--radius);
+    max-height: 70rem;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .project-body {
+    align-items: start;
+    display: grid;
+    gap: clamp(3rem, 8vw, 8rem);
+    grid-template-columns: minmax(12rem, 17rem) 1fr;
+    padding-block: clamp(4rem, 8vw, 7rem);
+  }
+
+  aside {
+    border-top: 1px solid var(--line);
+  }
+
+  aside div {
+    border-bottom: 1px solid var(--line);
+    padding-block: 0.9rem;
+  }
+
+  dt {
+    color: var(--rose-dark);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  dd {
+    margin: 0.2rem 0 0;
+    text-transform: capitalize;
+  }
+
+  .prose {
+    margin: 0;
+  }
+
+  .gallery {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .gallery :global(img) {
+    border-radius: 0.75rem;
+    width: 100%;
+  }
+
+  @media (max-width: 45rem) {
+    .project-body,
+    .gallery {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
