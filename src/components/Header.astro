@@ -12,7 +12,7 @@ const pathname = Astro.url.pathname;
 <header class="site-header">
   <div class="container header-inner">
     <a class="brand" href="/" aria-label={`${site.siteName} home`}>
-      <img class="wordmark" src="/donna-wordmark.svg" alt="" />
+      <img class="wordmark" src="/donna-wordmark.svg" alt="" width="540" height="112" />
     </a>
     <nav aria-label="Main navigation">
       <ul>
@@ -38,12 +38,13 @@ const pathname = Astro.url.pathname;
 
   .brand {
     display: block;
+    flex: 0 0 auto;
     text-decoration: none;
   }
 
   .wordmark {
-    height: 3.25rem;
-    width: auto;
+    height: auto;
+    width: clamp(11.5rem, 26vw, 15.75rem);
   }
 
   ul {
@@ -66,7 +67,7 @@ const pathname = Astro.url.pathname;
     text-underline-offset: 0.35em;
   }
 
-  @media (max-width: 34rem) {
+  @media (max-width: 45rem) {
     .header-inner {
       align-items: start;
       flex-direction: column;
