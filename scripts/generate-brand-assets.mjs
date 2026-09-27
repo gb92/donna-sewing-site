@@ -27,7 +27,7 @@ const monogram = `
   </g>
 `;
 
-const brandMark = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 112" role="img" aria-label="A letter D formed by a sewing needle and thread leading to a spool">
+const brandMark = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="44 5 138 106" role="img" aria-label="A letter D formed by a sewing needle and thread leading to a spool">
   <g>${monogram}</g>
 </svg>`;
 
