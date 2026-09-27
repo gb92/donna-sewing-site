@@ -1,5 +1,6 @@
 ---
 import { site } from "../lib/site";
+import SocialLinks from "./SocialLinks.astro";
 ---
 
 <footer>
@@ -10,7 +11,7 @@ import { site } from "../lib/site";
     </div>
     <div class="links">
       {site.email && <a href={`mailto:${site.email}`}>Email</a>}
-      {site.socialLinks.map((link) => <a href={link.url} rel="me">{link.label}</a>)}
+      <SocialLinks links={site.socialLinks} />
       <a href="/rss.xml">RSS</a>
     </div>
     <small>© {new Date().getFullYear()} {site.siteName}</small>

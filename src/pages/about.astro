@@ -2,6 +2,7 @@
 import { getEntry, render } from "astro:content";
 import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import SocialLinks from "../components/SocialLinks.astro";
 import { site } from "../lib/site";
 
 const about = await getEntry("pages", "about");
@@ -18,10 +19,10 @@ const { Content } = await render(about);
       {(site.email || site.socialLinks.length > 0) && (
         <div class="contact">
           <h2>Say hello</h2>
-          <p>
+          <div class="contact-links">
             {site.email && <a class="text-link" href={`mailto:${site.email}`}>Send an email</a>}
-            {site.socialLinks.map((link) => <a class="text-link" href={link.url} rel="me">{link.label}</a>)}
-          </p>
+            <SocialLinks links={site.socialLinks} />
+          </div>
         </div>
       )}
     </div>
@@ -65,10 +66,12 @@ const { Content } = await render(about);
     margin: 0;
   }
 
-  .contact p {
+  .contact-links {
+    align-items: center;
     display: flex;
     flex-wrap: wrap;
     gap: 1.25rem;
+    margin-top: 1rem;
   }
 
   @media (max-width: 45rem) {
