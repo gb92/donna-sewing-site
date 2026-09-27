@@ -12,7 +12,8 @@ const pathname = Astro.url.pathname;
 <header class="site-header">
   <div class="container header-inner">
     <a class="brand" href="/" aria-label={`${site.siteName} home`}>
-      <img class="wordmark" src="/donna-wordmark.svg" alt="" width="540" height="112" />
+      <img class="brand-mark" src="/brand-mark.svg" alt="" width="180" height="112" />
+      <span class="brand-name">{site.siteName}</span>
     </a>
     <nav aria-label="Main navigation">
       <ul>
@@ -37,14 +38,24 @@ const pathname = Astro.url.pathname;
   }
 
   .brand {
-    display: block;
+    align-items: center;
+    display: flex;
     flex: 0 0 auto;
+    gap: 0.7rem;
     text-decoration: none;
   }
 
-  .wordmark {
+  .brand-mark {
     height: auto;
-    width: clamp(11.5rem, 26vw, 15.75rem);
+    width: clamp(4.5rem, 9vw, 5.75rem);
+  }
+
+  .brand-name {
+    color: var(--ink);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.25rem, 2.5vw, 1.65rem);
+    font-weight: 700;
+    line-height: 1;
   }
 
   ul {
